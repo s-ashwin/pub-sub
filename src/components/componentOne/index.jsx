@@ -5,14 +5,9 @@ export default function ComponentOne() {
     const [data, setData]= useState(0)
 
     useEffect(()=>{
-        globalStore.accountService.subscribe("SUBSCRIBE", data => {
-          console.log(data);
+        globalStore.accountService.subscribe(data => {
            setData(data.count)
-        });
-        
-      //   globalStore.platformService.subscribe("SUBSCRIBE","name", data => {
-      //     setData(data.id)
-      //  });
+        },["count"]);
     },[])
 
   return (
@@ -20,7 +15,7 @@ export default function ComponentOne() {
         <span>ComponentOne - Account: <span style={{color:"#5DA3FA"}}>{data}</span> </span>
         <button 
         style={{width:"fit-content"}} 
-        onClick={()=>globalStore.accountService.publish("PUBLISH", {count:data-1})}>
+        onClick={()=>globalStore.accountService.publish({count:data-1})}>
                 Decrement
         </button>
     </div>

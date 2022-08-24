@@ -12,10 +12,10 @@ function App() {
   const onIncrement = (service)=>{
     switch (service) {
       case "PLATFORM":
-        globalStore.platformService.publish("PUBLISH", {count:platformCount+1});
+        globalStore.platformService.publish({count:platformCount+1});
         break;
       case "ACCOUNT":
-        globalStore.accountService.publish("PUBLISH", {count:accountCount+1});
+        globalStore.accountService.publish({count:accountCount+1});
         break;
       default:
         break;
@@ -23,12 +23,12 @@ function App() {
   }
 
   useEffect(()=>{
-    globalStore.accountService.subscribe("SUBSCRIBE", data => {
+    globalStore.accountService.subscribe( data => {
        setAccountCount(data.count)
-    });
-    globalStore.platformService.subscribe("SUBSCRIBE", data => {
+    },["count"]);
+    globalStore.platformService.subscribe( data => {
       setPlatformCount(data.count)
-    });
+    },["count"]);
   },[])
 
   return (
@@ -48,6 +48,11 @@ function App() {
           <div style={{ border:"0.5px solid white", padding:20, borderRadius:10}}>
             <p>Platform: {platformCount}</p>
             <button onClick={()=>onIncrement("PLATFORM")}>Increment</button>
+            <button 
+            style={{width:"fit-content"}} 
+            onClick={()=>globalStore.platformService.publish({name:"ash"})}>
+                    Change Name
+            </button>
           </div>
         </div>
       </header>
